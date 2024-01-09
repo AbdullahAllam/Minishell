@@ -3,73 +3,99 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cclaude <cclaude@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ama10362 <ama10362@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 17:46:22 by cclaude           #+#    #+#             */
-/*   Updated: 2019/10/16 14:40:05 by cclaude          ###   ########.fr       */
+/*   Updated: 2024/01/07 21:08:39 by ama10362         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	word_count(char const *s, char c)
+int
+	check_sepp(char a, char c)
 {
-	int		i;
-	int		count;
+	if (c == a)
+		return (1);
+	if (a == '\0')
+		return (1);
+	return (0);
+}
 
-	i = 0;
+int
+	count_wd(char *strarray, char c)
+{
+	int	i;
+	int	count;
+
 	count = 0;
-	while (s[i] == c)
+	i = 0;
+	while (strarray[i])
+	{
+		if (check_sepp(strarray[i + 1], c) == 1
+			&& check_sepp(strarray[i], c) == 0)
+			count++;
 		i++;
-	while (s[i] != '\0')
-	{
-		count++;
-		while (s[i] != c && s[i] != '\0')
-			i++;
-		while (s[i] == c)
-			i++;
 	}
 	return (count);
 }
 
-static int	letter_count(char const *s, char c, int index)
+void
+	copy_wd(char *dest, char *src, char c)
 {
-	int		count;
-
-	count = 0;
-	while (s[index] != c && s[index] != '\0')
-	{
-		count++;
-		index++;
-	}
-	return (count);
-}
-
-char		**ft_split(char const *s, char c)
-{
-	char	**tab;
-	int		i;
-	int		j;
-	int		k;
+	int	i;
 
 	i = 0;
-	k = 0;
-	if (!s || !c || !(tab = malloc(sizeof(char *) * (word_count(s, c) + 1))))
+	while (check_sepp(src[i], c) == 0)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+}
+
+void
+	ft_write(char **result, char *strarray, char c)
+{
+	int	i;
+	int	j;
+	int	count;
+
+	i = 0;
+	j = 0;
+	count = 0;
+	while (strarray[i])
+	{
+		if (check_sepp(strarray[i], c) == 1)
+			i++;
+		else
+		{
+			j = 0;
+			while (check_sepp(strarray[i + j], c) == 0)
+				j++;
+			result[count] = (char *)malloc(sizeof(char) * (j + 1));
+			copy_wd(result[count], strarray + i, c);
+			i = i + j;
+			count++;
+		}
+	}
+}
+
+char
+	**ft_split(char const *s, char c)
+{
+	int		count;
+	char	*ptr;
+	char	**result;
+
+	if (!s)
+		return (0);
+	ptr = (char *) s;
+	count = count_wd(ptr, c);
+	result = (char **)malloc(sizeof(char *) * (count + 1));
+	if (!result)
 		return (NULL);
-	while (s[k] == c)
-		k++;
-	while (s[k] != '\0')
-	{
-		j = 0;
-		if (!(tab[i] = malloc(sizeof(char) * letter_count(s, c, k) + 1)))
-			return (NULL);
-		while (s[k] != c && s[k] != '\0')
-			tab[i][j++] = s[k++];
-		tab[i][j] = '\0';
-		while (s[k] == c)
-			k++;
-		i++;
-	}
-	tab[i] = NULL;
-	return (tab);
+	result[count] = 0;
+	ft_write(result, ptr, c);
+	return (result);
 }

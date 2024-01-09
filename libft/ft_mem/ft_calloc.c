@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cclaude <cclaude@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ama10362 <ama10362@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 12:23:38 by cclaude           #+#    #+#             */
-/*   Updated: 2019/10/09 14:33:54 by cclaude          ###   ########.fr       */
+/*   Updated: 2024/01/07 20:57:22 by ama10362         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void	*ft_calloc(size_t count, size_t size)
 	size_t	i;
 
 	i = 0;
-	if (!(space = malloc(size * count + 1)))
+	space = malloc(size * count + 1);
+	if (!(space))
 		return (NULL);
 	while (i < count * size + 1)
 		space[i++] = '\0';

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macrespo <macrespo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ama10362 <ama10362@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/11 15:49:42 by cclaude           #+#    #+#             */
-/*   Updated: 2020/08/05 16:27:56 by macrespo         ###   ########.fr       */
+/*   Created: 2024/01/07 20:45:08 by ama10362          #+#    #+#             */
+/*   Updated: 2024/01/07 20:46:02 by ama10362         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_list	*map_ft_memdel(t_list *start, void (*del)(void *))
 	return (NULL);
 }
 
-t_list			*ft_lstmap(t_list *lst, void *(*f)(void*), void (*del)(void *))
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void*), void (*del)(void *))
 {
 	t_list	*lstnew;
 	t_list	*temp;
@@ -40,7 +40,8 @@ t_list			*ft_lstmap(t_list *lst, void *(*f)(void*), void (*del)(void *))
 	prev = NULL;
 	while (temp != NULL && f != NULL && del != NULL)
 	{
-		if (!(lstnew = malloc(sizeof(t_list))))
+		lstnew = malloc(sizeof(t_list));
+		if (!(lstnew))
 			return (map_ft_memdel(start, del));
 		lstnew->content = f(temp->content);
 		if (prev != NULL)

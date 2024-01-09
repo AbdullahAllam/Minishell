@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_hexlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cclaude <cclaude@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ama10362 <ama10362@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/06 11:22:44 by cclaude           #+#    #+#             */
-/*   Updated: 2020/02/06 16:01:15 by cclaude          ###   ########.fr       */
+/*   Created: 2024/01/07 20:54:09 by ama10362          #+#    #+#             */
+/*   Updated: 2024/01/07 20:54:10 by ama10362         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_hexlen(long n)
+int	ft_hexlen(long n)
 {
 	int		size;
 

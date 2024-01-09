@@ -6,7 +6,7 @@
 /*   By: ama10362 <ama10362@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 16:56:31 by ama10362          #+#    #+#             */
-/*   Updated: 2023/12/30 17:00:30 by ama10362         ###   ########.fr       */
+/*   Updated: 2024/01/09 00:59:49 by ama10362         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,47 @@ int	additional_env_init(t_minishell *minishell, char **env_array)
 		i++;
 	}
 	return (0);
+}
+
+size_t	env_length(t_environement *env)
+{
+	size_t	length;
+
+	length = 0;
+	while (env && env->next != NULL)
+	{
+		if (env->value != NULL)
+		{
+			length += ft_strlen(env->value);
+			length++;
+		}
+		env = env->next;
+	}
+	return (length);
+}
+
+char	*into_str(t_environement *list)
+{
+	char	*env;
+	int		i;
+	int		j;
+
+	env = malloc(sizeof(char) * env_length(list) + 1);
+	if (!env)
+		return (NULL);
+	i = 0;
+	while (list && list->next != NULL)
+	{
+		if (list->value != NULL)
+		{
+			j = 0;
+			while (list->value[j])
+				env[i++] = list->value[j++];
+		}
+		if (list->next->next != NULL)
+			env[i++] = '\n';
+		list = list->next;
+	}
+	env[i] = '\0';
+	return (env);
 }

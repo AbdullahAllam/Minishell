@@ -6,19 +6,11 @@
 /*   By: ama10362 <ama10362@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:13:58 by ama10362          #+#    #+#             */
-/*   Updated: 2023/12/30 17:37:27 by ama10362         ###   ########.fr       */
+/*   Updated: 2024/01/09 14:01:14 by ama10362         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	sig_int(int code)
-{
-	(void)code;
-	ft_putstr_fd("\b\b  ", STDERR);
-	ft_putstr_fd("\n", STDERR);
-	ft_putstr_fd("\033[0;36m\033[1m😿 minishell ▸ \033[0m", STDERR);
-}
 
 static char	*sep_space_alloc(char *line_cmd)
 {
@@ -84,9 +76,9 @@ static int	open_quote_check(t_minishell *minishell, char **line_cmd)
 
 void	parse_line(t_minishell *minishell)
 {
-	char	*line_cmd;
+	char			*line_cmd;
 
-	signal(SIGINT, &sig_int);
+	signals_handle();
 	if (minishell->retvalue)
 		ft_putstr_fd("😿 ", STDERR);
 	else
@@ -103,7 +95,9 @@ void	parse_line(t_minishell *minishell)
 	if (open_quote_check(minishell, &line_cmd))
 		return ;
 	line_cmd = sep_to_space(line_cmd);
+	if (line_cmd && line_cmd[0] == '$')
+		line_cmd[0] = (char)(-line_cmd[0]);
 	minishell->first_token = obtain_tokens(line_cmd);
-	free(line_cmd);
+	ft_memdel(line_cmd);
 	arrange_args(minishell);
 }

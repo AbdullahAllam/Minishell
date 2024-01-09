@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cclaude <cclaude@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ama10362 <ama10362@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 13:21:55 by cclaude           #+#    #+#             */
-/*   Updated: 2019/10/16 14:32:00 by cclaude          ###   ########.fr       */
+/*   Updated: 2024/01/07 21:06:56 by ama10362         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	alloc_size(char const *s1, char const *set)
 	return (len - j);
 }
 
-char		*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set)
 {
 	char	*new;
 	int		i;
@@ -65,7 +65,8 @@ char		*ft_strtrim(char const *s1, char const *set)
 	i = 0;
 	j = 0;
 	alloc_len = alloc_size(s1, set);
-	if (!(new = malloc(sizeof(char) * alloc_len + 1)))
+	new = malloc(sizeof(char) * alloc_len + 1);
+	if (!(new))
 		return (NULL);
 	while (is_set(s1[i], set))
 		i++;

@@ -8,34 +8,27 @@ LIBFT = -L libft -lft -lreadline -lhistory
 
 HEADER = minishell.h
 
-#BUILTINS = cd echo env exit export pwd unset
-BUILTINS = ft_environment ft_pwd ft_exit ft_unset ft_echo cd export 
+BUILTINS = ft_environment ft_pwd ft_exit ft_unset ft_echo ft_cd ft_export 
+
+ENV = environment obtain_env shell_level sorting_response
+
+EXEC = binary built_ins execution
+
+MAIN = minishell wiring
+
+PARSE = parse_line token_funcs expand signals_handle
+
+ASSETS = fd_functions clean token kinds parse_tools initiate extra_lines expand_funcs
 
 
-#ENV = environment obtain_env sort_env shell_level
-ENV = environment obtain_env shell_level
-
-#EXEC = bin builtin exec
-
-#MAIN = minishell redir
-MAIN = minishell
-
-
-#PARSE = parse_line token_funcs expansions
-PARSE = parse_line token_funcs
-
-#ASSETS = fd_functions clean token kinds expansions parse_tools initiate
-ASSETS = fd_functions clean token kinds parse_tools initiate extra_lines
-
-
-#SRC = $(addsuffix .c, $(addprefix srcs/builtins/, $(BUILTINS))) \
+SRC = $(addsuffix .c, $(addprefix srcs/builtins/, $(BUILTINS))) \
 	  $(addsuffix .c, $(addprefix srcs/environment/, $(ENV))) \
 	  $(addsuffix .c, $(addprefix srcs/exec/, $(EXEC))) \
 	  $(addsuffix .c, $(addprefix srcs/main/, $(MAIN))) \
 	  $(addsuffix .c, $(addprefix srcs/parse/, $(PARSE))) \
 	  $(addsuffix .c, $(addprefix srcs/assets/, $(ASSETS))) \
 
-SRC = $(addsuffix .c, $(addprefix srcs/environment/, $(ENV))) \
+#SRC = $(addsuffix .c, $(addprefix srcs/environment/, $(ENV))) \
 	  $(addsuffix .c, $(addprefix srcs/main/, $(MAIN))) \
 	  $(addsuffix .c, $(addprefix srcs/parse/, $(PARSE))) \
 	  $(addsuffix .c, $(addprefix srcs/assets/, $(ASSETS))) \

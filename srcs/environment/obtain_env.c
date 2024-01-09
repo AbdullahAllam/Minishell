@@ -6,11 +6,36 @@
 /*   By: ama10362 <ama10362@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:00:42 by ama10362          #+#    #+#             */
-/*   Updated: 2023/12/30 17:01:19 by ama10362         ###   ########.fr       */
+/*   Updated: 2024/01/09 01:41:29 by ama10362         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	legal_env(const char *env)
+{
+	int		i;
+
+	i = 0;
+	if (ft_isdigit(env[i]) == 1)
+		return (0);
+	while (env[i] && env[i] != '=')
+	{
+		if (ft_isalnum(env[i]) == 0)
+			return (-1);
+		i++;
+	}
+	if (env[i] != '=')
+		return (2);
+	return (1);
+}
+
+int	legal_char(int c)
+{
+	if (ft_isalnum(c) == 1)
+		return (1);
+	return (0);
+}
 
 static int	environment_value_len(const char *env_value)
 {

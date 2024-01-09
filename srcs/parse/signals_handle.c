@@ -1,31 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*   signals_handle.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ama10362 <ama10362@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 20:11:24 by cclaude           #+#    #+#             */
-/*   Updated: 2024/01/07 20:55:11 by ama10362         ###   ########.fr       */
+/*   Created: 2024/01/09 14:01:55 by ama10362          #+#    #+#             */
+/*   Updated: 2024/01/09 14:08:53 by ama10362         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_memcmp(const void *s1, const void *s2, size_t n)
+void	sig_int(int code)
 {
-	size_t			i;
-	unsigned char	*p;
-	unsigned char	*q;
+	(void)code;
+	ft_putstr_fd("\n", STDERR);
+	ft_putstr_fd("\033[0;36m\033[1m😿 minishell ▸ \033[0m", STDERR);
+}
 
-	p = (unsigned char *)s1;
-	q = (unsigned char *)s2;
-	i = 0;
-	while (i < n)
-	{
-		if (p[i] != q[i])
-			return (p[i] - q[i]);
-		i++;
-	}
-	return (0);
+void	sig_quit(int code)
+{
+	(void)code;
+}
+
+void	signals_handle(void)
+{
+	struct termios	termios_new;
+
+	tcgetattr(0, &termios_new);
+	termios_new.c_lflag &= ~0001000;
+	tcsetattr(0, 0, &termios_new);
+	signal(SIGQUIT, sig_quit);
+	signal(SIGINT, &sig_int);
 }

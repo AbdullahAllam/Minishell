@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cclaude <cclaude@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ama10362 <ama10362@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 13:07:58 by cclaude           #+#    #+#             */
-/*   Updated: 2019/10/16 14:30:43 by cclaude          ###   ########.fr       */
+/*   Updated: 2024/01/07 21:06:39 by ama10362         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,29 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
+	char	*ptr;
 	int		i;
 	int		j;
-	char	*new;
 
-	if (s1 == NULL || s2 == NULL)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s1[i] != '\0')
-		i++;
-	while (s2[j] != '\0')
-		j++;
-	if (!(new = malloc(sizeof(char) * (i + j + 1))))
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s1[i] != '\0')
+	if (s1 && s2)
 	{
-		new[i] = s1[i];
-		i++;
+		i = 0;
+		j = 0;
+		ptr = malloc((ft_strlen((char *)s1) + ft_strlen((char *)s2) + 1));
+		if (!ptr)
+			return (NULL);
+		while ((char)s1[i])
+		{
+			ptr[i] = (char)s1[i];
+			i++;
+		}
+		while ((char)s2[j])
+		{
+			ptr[i + j] = (char)s2[j];
+			j++;
+		}
+		ptr[i + j] = '\0';
+		return (ptr);
 	}
-	while (s2[j] != '\0')
-		new[i++] = s2[j++];
-	new[i] = '\0';
-	return (new);
+	return (NULL);
 }

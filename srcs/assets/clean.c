@@ -6,7 +6,7 @@
 /*   By: ama10362 <ama10362@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:03:24 by ama10362          #+#    #+#             */
-/*   Updated: 2023/12/30 17:08:34 by ama10362         ###   ########.fr       */
+/*   Updated: 2024/01/05 12:30:08 by ama10362         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,19 @@ void	clean_token(t_token *first_token)
 		ft_memdel(current_token);
 		current_token = next_token;
 	}
+}
+
+void	clean_tab(char **tab)
+{
+	int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		if (tab[i])
+			ft_memdel(tab[i]);
+		i++;
+	}
+	if (tab)
+		ft_memdel(tab);
 }

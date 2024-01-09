@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_baselen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cclaude <cclaude@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ama10362 <ama10362@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/06 11:22:44 by cclaude           #+#    #+#             */
-/*   Updated: 2020/08/22 13:51:02 by cclaude          ###   ########.fr       */
+/*   Updated: 2024/01/07 20:53:26 by ama10362         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_baselen(long n, int base)
+int	ft_baselen(long n, int base)
 {
 	int		size;
 

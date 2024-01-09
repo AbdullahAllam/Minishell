@@ -6,7 +6,7 @@
 /*   By: ama10362 <ama10362@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 16:39:36 by ama10362          #+#    #+#             */
-/*   Updated: 2024/01/01 18:41:09 by ama10362         ###   ########.fr       */
+/*   Updated: 2024/01/09 14:02:25 by ama10362         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@
 # include <fcntl.h>
 # include <dirent.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <limits.h>
 # include <errno.h>
 # include <signal.h>
+# include <termios.h>
 
 # define EMPTY 0
 # define CMD 1
@@ -65,6 +67,13 @@ typedef struct s_environment
 	struct s_environment	*next;
 }				t_environement;
 
+typedef struct s_expand
+{
+	char			*replace;
+	int				i;
+	int				j;
+}				t_expand;
+
 typedef struct s_minishell
 {
 	t_token			*first_token;
@@ -77,36 +86,29 @@ typedef struct s_minishell
 	int				pipin;
 	int				pipout;
 	int				pid;
-	int				charge;
+	int				childroute;
 	int				parent;
 	int				last;
 	int				retvalue;
 	int				exitflag;
-	int				not_executed;
+	int				dont_exec;
 }				t_minishell;
-
-// typedef struct	s_expansions
-// {
-// 	char			*new_arg;
-// 	int				i;
-// 	int				j;
-// }				t_expansions;
 
 /*
 ** MINISHELL
 */
-// void			redir(t_mini *mini, t_token *token, int type);
-// void			input(t_mini *mini, t_token *token);
-// int				minipipe(t_mini *mini);
-// char			*expansions(char *arg, t_env *env, int ret);
+void			input_direct(t_minishell *mini, t_token *token);
+void			out_direct(t_minishell *mini, t_token *token, int type);
+int				pipe_direct(t_minishell *minishell);
+void			brain(t_minishell *mini, t_token *token);
 
 /*
 ** EXEC
 */
-// void			exec_cmd(t_mini *mini, t_token *token);
-// int				exec_bin(char **args, t_env *env, t_mini *mini);
-// int				exec_builtin(char **args, t_mini *mini);
-// int				is_builtin(char	*command);
+int				check_builtin(char *cmd);
+int				do_built_in(char **args, t_minishell *minishell);
+int				bin_exc(char **args, t_environement *env, t_minishell *mini);
+void			master_exec(t_minishell *minishell, t_token *token);
 
 /*
 ** BUILTINS
@@ -116,11 +118,10 @@ int				ft_pwd(void);
 void			ft_exit(t_minishell *minishell, char **args);
 int				ft_unset(char **arg, t_minishell *minishell);
 int				ft_echo(char **options);
-// int				ft_cd(char **args, t_env *env);
-// int				ft_export(char **args, t_env *env, t_env *secret);
-// int				env_add(const char *value, t_env *env);
-// char			*get_env_name(char *dest, const char *src);
-// int				is_in_env(t_env *env, char *args);
+int				ft_cd(char **args, t_environement *env);
+int				ft_export(char **a, t_environement *env, t_environement *add);
+int				increment_env(const char *value, t_environement *env);
+int				already_there(t_environement *env, char *args);
 
 /*
 ** PARSE
@@ -134,6 +135,7 @@ int				neglect_sep(char *line_cmd, int i);
 void			classify_type(t_token *token, int sep_neglect);
 int				is_last_valid_arg(t_token *token);
 void			arrange_args(t_minishell *minishell);
+char			*expand(char *arg, t_environement *env, int retvalue);
 
 /*
 ** ENV
@@ -146,28 +148,28 @@ char			*obtain_value(char *arg, t_environement *env);
 char			*environment_value(char *env_value);
 void			ft_neglect_space(const char *str, int *i);
 
-// char			*env_to_str(t_env *lst);
-// int				is_env_char(int c);
-// int				is_valid_env(const char *env);
-// void			print_sorted_env(t_env *env);
-// size_t			size_env(t_env *lst);
+char			*into_str(t_environement *list);
+int				legal_char(int c);
+int				legal_env(const char *env);
+void			no_arg_response(t_environement *environement);
 
 /*
 ** ASSETS
 */
 void			initiate_fds(t_minishell *minishell);
 void			initiate_shell(t_minishell *minishell);
-// void			reset_std(t_mini *mini);
-// void			close_fds(t_mini *mini);
-// void			ft_close(int fd);
+void			close_fd(int fd);
+void			close_2_fds(int fd1, int fd2);
+void			close_fds(t_minishell *minishell);
+void			reset_std(t_minishell *minishell);
 
 void			clean_environment(t_environement *environment);
 void			clean_token(t_token *first_token);
-// void			free_tab(char **tab);
+void			clean_tab(char **tab);
 
-// t_token			*next_sep(t_token *token, int skip);
+t_token			*next_sep(t_token *token, int skip);
 t_token			*prev_sep(t_token *token, int skip);
-// t_token			*next_run(t_token *token, int skip);
+t_token			*next(t_token *token, int skip);
 
 int				of_kind(t_token *token, int type);
 t_token			*find_next(t_token *token, int type, int skip);
@@ -177,13 +179,16 @@ int				includes_pipe(t_token *token);
 
 void			extra_lines(int *i, char *c);
 void			extra_lines_2(t_minishell *minishell);
+int				extra_lines_3(int ret);
+void			extra_lines_4(t_minishell *minishell, t_token *token);
+int				extra_lines_5(t_minishell *minishell, int status);
 
 /*
 ** EXPANSIONS
 */
-// int				ret_size(int ret);
-// int				get_var_len(const char *arg, int pos, t_env *env, int ret);
-// int				arg_alloc_len(const char *arg, t_env *env, int ret);
-// char			*get_var_value(const char *arg, int pos, t_env *env, int ret);
+char			*obtain(const char *arg, int pos, t_environement *env, int ret);
+int				alloc_length(const char *arg, t_environement *env, int ret);
+
+void			signals_handle(void);
 
 #endif
